@@ -47,8 +47,8 @@ There are 58 missing entires in the review column. We believe this is NMAR. Some
 #### Missingness Dependency
 There are 15036 missing rating entries. We suspect that the missingness of rating is depend on the n_ingredients colums. The plot below shows our empirical distribution of test statistics. 
 
-# Null Hypothesis: The missingness of rating is MCAR. 
-# Alternative Hypothesis: The missingness of rating is depend on the number of steps in the reciepes
+##### Null Hypothesis: The missingness of rating is MCAR. 
+##### Alternative Hypothesis: The missingness of rating is depend on the number of steps in the reciepes
 
 <iframe src="assets/fig_steps.html" width=800 height=600 frameBorder=0></iframe>
 
@@ -56,8 +56,8 @@ From the graph above and our p-value from the permutation test, we should reject
 
 We also suspect that the missingness of rating does not depend on the minutes column. 
 
-# Null Hypothesis: The missingness of rating is MCAR. 
-# Alt Hypothesis: The missingness of rating is depend on the minutes
+##### Null Hypothesis: The missingness of rating is MCAR. 
+##### Alt Hypothesis: The missingness of rating is depend on the minutes
 
 <iframe src="assets/fig_mins.html" width=800 height=600 frameBorder=0></iframe>
 
@@ -68,10 +68,10 @@ From the graph above and the p-value: around 0.114, we fail to reject null hypot
 
 #### Hypothesis Testing
 
-# Null Hypothesis: ratings and calories are not related - the high average calories in rating 1 is due to chance alone. In other words, if we picked 2870 ratings randomly from the population, it is reasonable to see an average that high.
+##### Null Hypothesis: ratings and calories are not related - the high average calories in rating 1 is due to chance alone. In other words, if we picked 2870 ratings randomly from the population, it is reasonable to see an average that high.
 
 
-# Alternative Hypothesis: ratings and calories are related - the high average calories in rating 1 is not due to chance alone.
+##### Alternative Hypothesis: ratings and calories are related - the high average calories in rating 1 is not due to chance alone.
 
 
 We picked sample average of calories as our test statistics and significance level of 0.05. The resulting p-value is 0.00017 which is much smaller than the significance level of 0.05. We rejected the null hypothesis and we conclude that the high average calories in rating 1 is not due to chance alone.
