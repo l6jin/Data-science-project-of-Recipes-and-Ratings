@@ -45,7 +45,45 @@ As we can see from the pivot table, recipes with rating of 1 has higher average 
 There are 58 missing entires in the review column. We believe this is NMAR. Some people might not want to spend too much time to write a review for the recieps or some people has tried the recipe and rated it before. The other columns so far does not tell us why the entry for reivew is missing. We could gather more data for ratings. Maybe recipe with higher ratings are more popular and the chance of a person who doesn't like to leave a reivew when they rate the recieps is higher. 
 
 #### Missingness Dependency
+There are 15036 missing rating entries. We suspect that the missingness of rating is depend on the n_ingredients colums. The plot below shows our empirical distribution of test statistics. 
+
+# Null Hypothesis: The missingness of rating is MCAR. 
+# Alternative Hypothesis: The missingness of rating is depend on the number of steps in the reciepes
+
+<iframe src="assets/fig_steps.html" width=800 height=600 frameBorder=0></iframe>
+
+From the graph above and our p-value from the permutation test, we should reject our null hypothesis. Therefore, we have evidence to say that the missingness of rating is depend on the number of steps in the reciepes.
+
+We also suspect that the missingness of rating does not depend on the minutes column. 
+
+# Null Hypothesis: The missingness of rating is MCAR. 
+# Alt Hypothesis: The missingness of rating is depend on the minutes
+
+<iframe src="assets/fig_mins.html" width=800 height=600 frameBorder=0></iframe>
+
+From the graph above and the p-value: around 0.114, we fail to reject null hypothesis. Therefore, the missingess of rating is not depend on the minutes columns
+
 
 ### Hypothesis Testing
 
 #### Hypothesis Testing
+
+# Null Hypothesis: ratings and calories are not related - the high average calories in rating 1 is due to chance alone. In other words, if we picked 2870 ratings randomly from the population, it is reasonable to see an average that high.
+
+
+# Alternative Hypothesis: ratings and calories are related - the high average calories in rating 1 is not due to chance alone.
+
+
+We picked sample average of calories as our test statistics and significance level of 0.05. The resulting p-value is 0.00017 which is much smaller than the significance level of 0.05. We rejected the null hypothesis and we conclude that the high average calories in rating 1 is not due to chance alone.
+
+
+Our choice of null hypothesis is a good choice since it is a probability model that we can simulate under.
+Our alternative hypothesis works well as a different viewpoint on how the recipe and rating data were generated compared with null hypothesis. Sample average is a reasonable choice of test statistics since calories is numerical. 0.05 is common cutoff for hypothesis testing and provides us significant level of confidence to reject the null hypothesis.
+
+
+We also embeded the empirical distribution of sample mean of calories
+
+
+<iframe src="assets/hypothesis_testing.html" width=800 height=600 frameBorder=0></iframe>
+
+
