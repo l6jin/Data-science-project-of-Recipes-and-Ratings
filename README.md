@@ -1,30 +1,37 @@
 # Data-science-project-of-Recipes-and-Ratings
+
+
 ### Introduction
-The two datasets contain recipes and ratings from the website food.com. We select the subset of the raw data, containing only the recipes and reviews posted since 2018, since the original data is quite large. 
+The two datasets contain recipes and ratings from the website food.com. We selected the subset of the raw data, containing only the recipes and reviews posted since 2018 because the original data is quite large. 
 
 Our analysis is centered around the question: Could we interpret the Recieps' calories by their Ratings?
-Our question tries to establish a connection between the calories and ratings of recipes. It is a significant and interesting question to analyze since it sheds light on how people value the recipes based on the amount of calories. If high-caloriy recipes are generally rated "bad", it may motivate the invention of more "healthy" recipes.  
-Some general information about our datasets: "recipes" dataset contains 83782 rows  while "interaction" dataset has 731927 rows . We are interested in the column "rating" and "nutrition". "rating" column gives 
-each recipe's rating by each unique user_id. "nutrition" column contains nutrition information in the form[calories (#), total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat (PDV), carbohydrates (PDV)]; PDV stands for "percentage of daily value"], and our interested elem "calories" is in the column.
+
+Our question tries to establish a connection between the calories and ratings of recipes. It is a significant and interesting question to analyze since it sheds light on how people value the recipes based on the amount of calories. If high-calories recipes are generally rated "bad", it may motivate the invention of more "healthy" recipes.  
+
+Some general information about our datasets: "recipes" dataset contains 83782 rows  while "interaction" dataset has 731927 rows . We are interested in the column "rating" and "nutrition". "rating" column gives each recipe's rating by each unique user_id. "nutrition" column contains nutrition information in the form[calories (#), total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat (PDV), carbohydrates (PDV)]; PDV stands for "percentage of daily value"], and our interested elem "calories" is in the column.
 
 
 ### Cleaning and EDA
 
 #### Data Cleaning
 
-We first load the two data sets and merged the two datasets to keep all the information from the recipes. We also calculated the average rating for each recipes. 
+We first loaded the two data sets and merged the two datasets to keep all the information from the recipes. We also calculated the average rating for each recipes. 
 
 We noticed some of the ratings are 0 for no specifc reasons. Therefore, to make sure these rating wouldn't affect the overall rating of each dish, we replace them with NaN. 
 
-In addition, we noticed the information in columns steps, tags, ingredients, and nutrition is not stored as a list. We turned the string to a list for each entry. 
+In addition, we noticed the information in 'columns' 'steps', 'tags', 'ingredients', and 'nutrition' is not stored as a list. We turned the string to a list for each entry. 
 
-In order to help answering our questions, we add another column for calories derived from nutrition column. In addition, to help us better categorize different rating levels with the average rating, we added another column called rating_comment. The standard for the value assigned is illustrated below. 
+In order to help answering our question, we added another column for calories derived from nutrition column. In addition, to help us better categorize different rating levels with the average rating, we added another column called rating_comment. The standard for the value assigned is illustrated below. 
 
 If the average rating is larger or greater than 0 and smaller than 2, we categorize it as 'bad.' 
+
 If the average rating is larger or greater than 2 and smaller than 3, we categorize it as 'ok.'
+
 If the average rating is larger or greater than 3 and smaller than 4, we categorize it as 'good.'
+
 The other higher average rating is categorized as 'excellent.'
-This new columns helps us organized the continuous average rating to different discrete level. This helps us better analyze our overall questions and make the data more readable. We also dropped the columns for 'tags','steps',and'ingredients' because they are not very related to our current exploring interest or question. 
+
+This new column helps us organize the continuous average rating to different discrete level. This helps us better analyze our overall questions and make the data more readable. We also dropped the columns for 'tags','steps',and'ingredients' because they are not very related to our current exploring interest or question. 
 
 Below is the first three rows of our cleaned data.: 
 
@@ -44,18 +51,21 @@ Below shows the distribution of the steps each recipe take. We can see that it i
 #### Bivariate Analysis
 
 Scatter plot between average rating and calories
+
 The scatter plot shows how the amount of calories are distributed across the differet average ratings. The data are concentrated around the 0-1200 calories with few outliers. From the graph, we expect to see the calories are evenly distributed across the ratings. Maybe the recipes with "excellent" as their rating comment will have higher calories on average. But, in the following exploration, we find it is actually not!
 
 <iframe src="assets/scatterplot.html" width=800 height=600 frameBorder=0></iframe>
 <iframe src="assets/comment_univa.html" width=800 height=600 frameBorder=0></iframe>
 
 Bar graph of Average Calories by Differnt Rating Comments
-According to the graph, the mean calories of rating 'ok','good',and 'excellent' are about the same. However, the recipes with'bad' rating comment has a greater amount of mean calories compared with other scales. This is an interesting pattern and we want to investigate it a little bit further.
+
+According to the graph, the mean calories of rating 'ok', 'good', and 'excellent' are about the same. However, the recipes with 'bad' rating comment has a greater amount of mean calories compared with other scales. This is an interesting pattern and we want to investigate it a little bit further.
 
 
 <iframe src="assets/bargraph.html" width=800 height=600 frameBorder=0></iframe>
 
 #### Interesting Aggregates
+
 As we can see from the pivot table, recipes with 'bad' rating comment has higher average calories. The rest of the recipes have roughly the same amount of average calories. Therefore, we want to further investigate whether this is related to chance or there's a realtionship between calories and rating. 
 
 | rating_comment   |    mean |   count |
@@ -68,7 +78,7 @@ As we can see from the pivot table, recipes with 'bad' rating comment has higher
 ### Assessment of Missingness
 #### NMAR Analysis
 
-There are 70 missing entires in the description column. We believe this is NMAR. The other columns so far does not tell us why the entry for description is missing. Possible reasons might be that description itself that are missing can be considered as too verbose to write down or it is too short/easy that people don't think it need to be written down. We could gather more data for n_steps or minutues. Maybe recipe with more steps or needs longer time would require a description that is verbose, which is related to the missingness. With more data, we might be able to explain the missingness. 
+There are 70 missing entires in the 'description' column. We believe this is NMAR. The other columns so far do not tell us why the entry for 'description' is missing. Possible reasons might be that 'description' itself that are missing can be considered as too verbose to write down or it is too short/easy that people don't think it need to be written down. We could gather more data for n_steps or minutues. Maybe recipe with more steps or needs longer time would require a description that is verbose, which is related to the missingness. With more data, we might be able to explain the missingness. 
 
 #### Missingness Dependency
 There are 2609 missing average rating entries. We suspect that the missingness of rating may be related to the n_ingredients column and n_step column. 
@@ -89,6 +99,7 @@ We also suspect that the missingness of rating does not depend on the n_ingredie
 ##### Alt Hypothesis: The missingness of rating is depend on the n_ingredients.
 
 <iframe src="assets/ks_ingredients.html" width=800 height=600 frameBorder=0></iframe>
+
 The graph above shows our empirical ditribution. From the distribution graph above, we can see the n-ingredients distibution by the missingenss of average rating. This shows that we need to use ks statistics for the permutation test. 
 
 
@@ -106,7 +117,7 @@ The graph above shows our empirical ditribution. From the graph above and the p-
 ##### Alternative Hypothesis: Calories and rating_comment are not related. The high calories we saw in entries that has 'bad' rating_comment is not due to chance alone.
 
 
-We picked sample average of calories as our test statistics and significance level of 0.05. The resulting p-value is 0.12056 which is much larger than the significance level of 0.05. We failed to reject the null hypothesis and we conclude that the high average calories with "bad" rating comment is due to chance alone.
+We picked sample average of calories as our test statistics and significance level of 0.05. The resulting p-value is 0.12056 which is much larger than the significance level of 0.05. We failed to reject the null hypothesis and we concluded that the high average calories with "bad" rating comment is due to chance alone.
 
 
 Our choice of null hypothesis is a good choice since it is a probability model that we can simulate under.
