@@ -24,15 +24,15 @@ If the average rating is larger or greater than 0 and smaller than 2, we categor
 If the average rating is larger or greater than 2 and smaller than 3, we categorize it as 'ok.'
 If the average rating is larger or greater than 3 and smaller than 4, we categorize it as 'good.'
 The other higher average rating is categorized as 'excellent.'
-This new columns helps us organized the continuous average rating to different discrete level. This helps us better analyze our overall questions and make the data more readable. We also dropped the columns for 'tags','steps','description' and'ingredients' because they are not very related to our current exploring interest or question. 
+This new columns helps us organized the continuous average rating to different discrete level. This helps us better analyze our overall questions and make the data more readable. We also dropped the columns for 'tags','steps',and'ingredients' because they are not very related to our current exploring interest or question. 
 
 Below is the first three rows of our cleaned data.: 
 
-|    | name                                 |     id |   minutes |   contributor_id | submitted   | nutrition                                    |   n_steps |   n_ingredients |   average_rating | rating_comment   |   calories |
-|---:|:-------------------------------------|-------:|----------:|-----------------:|:------------|:---------------------------------------------|----------:|----------------:|-----------------:|:-----------------|-----------:|
-|  0 | 1 brownies in the world    best ever | 333281 |        40 |           985201 | 2008-10-27  | ['38.4, 10.0, 50.0, 3.0, 3.0, 19.0, 6.']     |        10 |               9 |                4 | excellent        |       38.4 |
-|  1 | 1 in canada chocolate chip cookies   | 453467 |        45 |          1848091 | 2011-04-11  | ['95.1, 46.0, 211.0, 22.0, 13.0, 51.0, 26.'] |        12 |              11 |                5 | excellent        |       95.1 |
-|  2 | 412 broccoli casserole               | 306168 |        40 |            50969 | 2008-05-30  | ['94.8, 20.0, 6.0, 32.0, 22.0, 36.0, 3.']    |         6 |               9 |                5 | excellent        |       94.8 |
+|    | name                                 |     id |   minutes |   contributor_id | submitted   | nutrition                                    |   n_steps | description                                                                                                                                                                                                                                                                                                                                                                          |   n_ingredients |   average_rating | rating_comment   |   calories |
+|---:|:-------------------------------------|-------:|----------:|-----------------:|:------------|:---------------------------------------------|----------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------:|-----------------:|:-----------------|-----------:|
+|  0 | 1 brownies in the world    best ever | 333281 |        40 |           985201 | 2008-10-27  | ['38.4, 10.0, 50.0, 3.0, 3.0, 19.0, 6.']     |        10 | these are the most; chocolatey, moist, rich, dense, fudgy, delicious brownies that you'll ever make.....sereiously! there's no doubt that these will be your fav brownies ever for you can add things to them or make them plain.....either way they're pure heaven!...                                                                                                              |               9 |                4 | excellent        |       38.4 |
+|  1 | 1 in canada chocolate chip cookies   | 453467 |        45 |          1848091 | 2011-04-11  | ['95.1, 46.0, 211.0, 22.0, 13.0, 51.0, 26.'] |        12 | this is the recipe that we use at my school cafeteria for chocolate chip cookies. they must be the best chocolate chip cookies i have ever had! if you don't have margarine or don't like it, then just use butter (softened) instead....                                                                                                                                            |              11 |                5 | excellent        |       95.1 |
+|  2 | 412 broccoli casserole               | 306168 |        40 |            50969 | 2008-05-30  | ['94.8, 20.0, 6.0, 32.0, 22.0, 36.0, 3.']    |         6 | since there are already 411 recipes for broccoli casserole posted to "zaar" ,i decided to call this one  #412 broccoli casserole.i don't think there are any like this one in the database. i based this one on the famous "green bean casserole" from campbell's soup. but i think mine is better since i don't like cream of mushroom soup.submitted to "zaar" on may 28th,2008... |               9 |                5 | excellent        |       94.8 |
 
 #### Univariate Analysis
 Below shows the distribution of average rating for the recipes. We can see the most of the recipes has an average rating around 5, which is aroudn 75 percent. Less recipes has an average rating around 1 and 2. 
@@ -68,46 +68,52 @@ As we can see from the pivot table, recipes with 'bad' rating comment has higher
 ### Assessment of Missingness
 #### NMAR Analysis
 
-There are 58 missing entires in the review column. We believe this is NMAR. Some people might not want to spend too much time to write a review for the recieps or some people has tried the recipe and rated it before. The other columns so far does not tell us why the entry for reivew is missing. We could gather more data for ratings. Maybe recipe with higher ratings are more popular and the chance of a person who doesn't like to leave a reivew when they rate the recieps is higher. 
+There are 70 missing entires in the description column. We believe this is NMAR. The other columns so far does not tell us why the entry for description is missing. Possible reasons might be that description itself that are missing can be considered as too verbose to write down or it is too short/easy that people don't think it need to be written down. We could gather more data for n_steps or minutues. Maybe recipe with more steps or needs longer time would require a description that is verbose, which is related to the missingness. With more data, we might be able to explain the missingness. 
 
 #### Missingness Dependency
-There are 15036 missing rating entries. We suspect that the missingness of rating is depend on the n_ingredients colums. The plot below shows our empirical distribution of test statistics. 
+There are 2609 missing average rating entries. We suspect that the missingness of rating may be related to the n_ingredients column and n_step column. 
 
 ##### Null Hypothesis: The missingness of rating is MCAR. 
 ##### Alternative Hypothesis: The missingness of rating is depend on the number of steps in the reciepes
+<iframe src="assets/steps_dist.html" width=800 height=600 frameBorder=0></iframe>
+
+From the distribution graph above, we can see the n-steps distibution by the missingenss of average rating. This shows that we need to use ks statistics for the permutation test. 
+
+<iframe src="assets/ks_steps.html" width=800 height=600 frameBorder=0></iframe>
+
+From the graph above and our p-value: around 0 from the permutation test, we should reject our null hypothesis. Therefore, we have evidence to say that the missingness of rating is depend on the number of steps in the reciepes.
+
+We also suspect that the missingness of rating does not depend on the n_ingredients column. 
+
+##### Null Hypothesis: The missingness of rating is MCAR. 
+##### Alt Hypothesis: The missingness of rating is depend on the n_ingredients.
+
+<iframe src="assets/ks_ingredients.html" width=800 height=600 frameBorder=0></iframe>
+The graph above shows our empirical ditribution. From the distribution graph above, we can see the n-ingredients distibution by the missingenss of average rating. This shows that we need to use ks statistics for the permutation test. 
+
 
 <iframe src="assets/fig_steps.html" width=800 height=600 frameBorder=0></iframe>
 
-From the graph above and our p-value from the permutation test, we should reject our null hypothesis. Therefore, we have evidence to say that the missingness of rating is depend on the number of steps in the reciepes.
-
-We also suspect that the missingness of rating does not depend on the minutes column. 
-
-##### Null Hypothesis: The missingness of rating is MCAR. 
-##### Alt Hypothesis: The missingness of rating is depend on the minutes
-
-<iframe src="assets/fig_mins.html" width=800 height=600 frameBorder=0></iframe>
-
-From the graph above and the p-value: around 0.114, we fail to reject null hypothesis. Therefore, the missingess of rating is not depend on the minutes columns
+The graph above shows our empirical ditribution. From the graph above and the p-value: around 0.112, we fail to reject null hypothesis. Therefore, the missingess of rating is not depend on the n_ingredients columns
 
 
 ### Hypothesis Testing
 
 #### Hypothesis Testing
 
-##### Null Hypothesis: ratings and calories are not related - the high average calories in rating 1 is due to chance alone. In other words, if we picked 2870 ratings randomly from the population, it is reasonable to see an average that high.
+##### Null Hypothesis: Calories and rating_comment is not related. The high calories we saw in entries that has 'bad' rating_comment is due to chance alone. 
+
+##### Alternative Hypothesis: Calories and rating_comment are not related. The high calories we saw in entries that has 'bad' rating_comment is not due to chance alone.
 
 
-##### Alternative Hypothesis: ratings and calories are related - the high average calories in rating 1 is not due to chance alone.
-
-
-We picked sample average of calories as our test statistics and significance level of 0.05. The resulting p-value is 0.00017 which is much smaller than the significance level of 0.05. We rejected the null hypothesis and we conclude that the high average calories in rating 1 is not due to chance alone.
+We picked sample average of calories as our test statistics and significance level of 0.05. The resulting p-value is 0.12056 which is much larger than the significance level of 0.05. We failed to reject the null hypothesis and we conclude that the high average calories with "bad" rating comment is due to chance alone.
 
 
 Our choice of null hypothesis is a good choice since it is a probability model that we can simulate under.
 Our alternative hypothesis works well as a different viewpoint on how the recipe and rating data were generated compared with null hypothesis. Sample average is a reasonable choice of test statistics since calories is numerical. 0.05 is common cutoff for hypothesis testing and provides us significant level of confidence to reject the null hypothesis.
 
 
-We also embeded the empirical distribution of sample mean of calories
+We also embeded the empirical distribution of sample mean of calories with "bad" rating comment 
 
 
 <iframe src="assets/hypothesis_testing.html" width=800 height=600 frameBorder=0></iframe>
