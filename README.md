@@ -1,5 +1,5 @@
 # Data-science-project-of-Recipes-and-Ratings
-
+### Author: Luming (Selina) Jin and Jialing Li (Freya)
 
 ### Introduction
 The two datasets contain recipes and ratings from the website food.com. We selected the subset of the raw data, containing only the recipes and reviews posted since 2018 because the original data is quite large. 
